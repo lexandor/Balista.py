@@ -1,38 +1,51 @@
 
 
 
-from Tkinter import *
+from tkinter import *
 
 root = Tk()
 
 varListFrame = Frame(root)
 varListFrame.grid(row=0, column=0)
 
-grafFrame = Frame(root, bg="white")
-grafFrame.grid( row=0, column=1)
+grafFrame = Frame(root, bg="black")
+grafFrame.grid( row=0, column=1, pady=20)
 
 controllerFrame = Frame(root)
-controllerFrame.grid( row=1, column=1, columnspan=1)
+controllerFrame.grid( row=1, column=0, columnspan=1)
 
 
 angle = Label(varListFrame, text="Alpha =")
-angle.pack()
+angle.grid( row=0, column=0)
+angleEntry = Entry(varListFrame)
+angleEntry.grid( row=0, column=1)
 
 speedStart = Label(varListFrame, text="Vo =")
-speedStart.pack()
+speedStart.grid( row=1, column=0)
+speedStartEntry = Entry(varListFrame)
+speedStartEntry.grid( row=1, column=1)
 
 height = Label(varListFrame, text="h =")
-height.pack()
+height.grid( row=2, column=0)
+heightEntry = Entry(varListFrame)
+heightEntry.grid( row=2, column=1)
 
 mass = Label(varListFrame, text="m =")
-mass.pack()
+mass.grid( row=3, column=0)
+massEntry = Entry(varListFrame)
+massEntry.grid( row=3, column=1)
 
 heightMax = Label(varListFrame, text="H =")
-heightMax.pack()
+heightMax.grid( row=4, column=0)
+heightMaxEntry = Entry(varListFrame)
+heightMaxEntry.grid( row=4, column=1)
 
 
-grafCanvas = Canvas(grafFrame, border=2) 
-grafCanvas.pack()
+grafCanvas = Canvas(grafFrame, width=500, height=500, bg='white') 
+grafCanvas.pack(pady = 1, padx = 1)
+# Начало координат Х=10 Y=490
+grafCanvas.create_line(10, 490, 490, 490, width=1, arrow=LAST) # X Ось
+grafCanvas.create_line(10, 490, 10, 10, width=1, arrow=LAST) # Y Ось
 
 
 btnClear = Button(controllerFrame, text="Clear")
