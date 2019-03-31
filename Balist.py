@@ -8,14 +8,15 @@ root.title('Balista.py')
 root.geometry("800x600")
 
 varListFrame = Frame(root)
-varListFrame.grid(row=0, column=0)
+varListFrame.grid(row=0, column=0, sticky=NW, pady=40, padx=15)
 
 grafFrame = Frame(root, bg="black")
 grafFrame.grid( row=0, column=1, pady=20)
 
-controllerFrame = Frame(root)
-controllerFrame.grid( row=1, column=0, columnspan=1)
-
+controllerFrameLeft = Frame(root)
+controllerFrameLeft.grid(row=1, column=0, sticky=SW, padx=15)
+controllerFrameRight = Frame(root)
+controllerFrameRight.grid(row=1, column=1, sticky=SE)
 
 angle = Label(varListFrame, text="Alpha =")
 angle.grid( row=0, column=0)
@@ -50,8 +51,7 @@ grafCanvas.create_line(10, 490, 490, 490, width=1, arrow=LAST) # X Ось
 grafCanvas.create_line(10, 490, 10, 10, width=1, arrow=LAST) # Y Ось
 
 
-btnClear = Button(controllerFrame, text="Clear")
-btnClear.pack(side=LEFT)
+
 
 
 x = 10
@@ -80,17 +80,20 @@ def graf_dot():
 
     root.after(5, graf_dot)
 
-btnBuild = Button(controllerFrame, text="Build", command=graf_dot)
-btnBuild.pack(side=LEFT)
+btnBuild = Button(controllerFrameLeft, text="Build", command=graf_dot)
+btnBuild.grid(row=0, column=0)
 
-btnLoadGraf = Button(controllerFrame, text="loadGraf")
-btnLoadGraf.pack(side=RIGHT)
+btnClear = Button(controllerFrameLeft, text="Clear")
+btnClear.grid(row=0, column=1, padx=10)
 
-btnScreenShot = Button(controllerFrame, text="|*|")
-btnScreenShot.pack(side=RIGHT)
+btnLoadGraf = Button(controllerFrameRight, text="loadGraf")
+btnLoadGraf.grid(row=0, column=0, padx=10)
 
-btnSaveGraf = Button(controllerFrame, text="SaveGraf")
-btnSaveGraf.pack(side=RIGHT)
+btnScreenShot = Button(controllerFrameRight, text="|*|")
+btnScreenShot.grid(row=0, column=1)
+
+btnSaveGraf = Button(controllerFrameRight, text="SaveGraf")
+btnSaveGraf.grid(row=0, column=2, sticky=E)
 
 
 
