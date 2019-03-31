@@ -1,9 +1,11 @@
 
 
-
+from math import *
 from tkinter import *
 
 root = Tk()
+root.title('Balista.py')
+root.geometry("800x600")
 
 varListFrame = Frame(root)
 varListFrame.grid(row=0, column=0)
@@ -51,7 +53,34 @@ grafCanvas.create_line(10, 490, 10, 10, width=1, arrow=LAST) # Y Ось
 btnClear = Button(controllerFrame, text="Clear")
 btnClear.pack(side=LEFT)
 
-btnBuild = Button(controllerFrame, text="Build")
+
+x = 10
+y = 490
+
+def graf_dot():
+    global x
+    global y
+    print(" global y : " + str(y))
+    print(" global x : " + str(x))
+    Vo = 2
+    t = 60
+    a = 60
+    g = 10
+
+    k = 1
+
+    #xo = 10
+    #yo = 490
+    x = x + ( Vo * t * cos(a) )
+    y = y - ( Vo * t * sin(a) ) + ( 0.5 * g * t * t)
+    print(x)
+    print(y)
+
+    grafCanvas.create_oval(k * x, k * y, k * x, k * y, width=1, outline="black")
+
+    root.after(5, graf_dot)
+
+btnBuild = Button(controllerFrame, text="Build", command=graf_dot)
 btnBuild.pack(side=LEFT)
 
 btnLoadGraf = Button(controllerFrame, text="loadGraf")
