@@ -69,18 +69,13 @@ def graf_dot():
     #print(" global x : " + str(x))
 
     #== Получение значений из полей
-    #Vo = speedStartEntry.get()
-    #t  = timeEntry.get()
-    #m  = massEntry.get()
-    #h  = heightEntry.get()
-    #H  = heightMaxEntry.get()
-    #a  = angleEntry.get()
-
-    Vo = 20
-    t  = 60
-    a  = 60
+    Vo = int(speedStartEntry.get())
+    t  = int(timeEntry.get())
+    m  = int(massEntry.get())
+    h  = int(heightEntry.get())
+    H  = int(heightMaxEntry.get())
+    a  = int(angleEntry.get())
     g  = 10
-
     
     L = (((Vo**2)*sin(2*a))/g) # Длинна полета
     k = L/490 # Коэффицент отображения, нужен чтобя график уместился на холсте
@@ -92,13 +87,15 @@ def graf_dot():
     #formula -->  y = (tan(a)*x) - (g*(x**2))/(2*(Vo**2)*(cos(a)**2))
  
 
-    for x in range(10, 4910, 1):
-        y = ((tan(a)*x) - (g*(x**2))/(2*(Vo**2)*(cos(a)**2)))
-        y = 0-y
-        grafCanvas.create_oval(k * x + 10, k * y, k * x + 10, k * y, width=1, outline="black")
+    for x in range(0, 490):
+        y = 490 - ((tan(a)*x) - (g*(x**2))/(2*(Vo**2)*(cos(a)**2)))
         
-    print(x)
-    print(y)
+        if (y == 491):
+            break
+        else:
+            grafCanvas.create_oval(x + 10, y, x + 10, y, width=1, outline="black")
+        print(x)
+        print(y)
     
     #grafCanvas.create_oval(k * x, k * y, k * x, k * y, width=1, outline="black")
 
