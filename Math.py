@@ -20,15 +20,27 @@ class Balista:
         self.controllerFrameLeft  = Frame(self.window)
         self.controllerFrameRight = Frame(self.window)
         # Разметка полей ввода
-        self.angleLabel      = Label(self.varListFrame, text="A = ")
-        self.angleEntry      = Entry(self.varListFrame) # Поле для ввода угла к горизонту
-        self.startSpeedLabel = Label(self.varListFrame, text="Vo = ")
-        self.startSpeedEntry = Entry(self.varListFrame) # Поду для ввода начальной скорости с которой бросили тело.
+        self.angleLabel       = Label(self.varListFrame, text="A = ")
+        self.angleEntry       = Entry(self.varListFrame) # Поле для ввода угла к горизонту
+        self.startSpeedLabel  = Label(self.varListFrame, text="Vo = ")
+        self.startSpeedEntry  = Entry(self.varListFrame) # Поле для ввода начальной скорости с которой бросили тело.
+        self.massLabel        = Label(self.varListFrame, text="m =")
+        self.massEntry        = Entry(self.varListFrame) # Поле для ввода массы
+        self.timeLabel        = Label(self.varListFrame, text="t =")
+        self.distanceLabel    = Label(self.varListFrame, text="L =")
+        self.isWindy          = Checkbutton(self.varListFrame, text="Есть ли ветер?", state=ACTIVE)
+        self.resistForceLabel = Label(self.varListFrame, text="Fсопр =")
+        self.resistForceEntry = Entry(self.varListFrame)
+        self.betaAngleLabel   = Label(self.varListFrame, text="B =")
+        self.betaAngleEntry   = Entry(self.varListFrame)  
+        self.viscosityLabel   = Label(self.varListFrame, text="k =")
+        self.viscosityEntry   = Entry(self.varListFrame)
+
         # Разметка кнопок
         self.btnBuild      = Button (self.controllerFrameLeft, text="Построить", command=self.plot)
         self.btnClear      = Button (self.controllerFrameLeft, text="Очистить", command=self.clear)
-        self.btnLoadGraf   = Button (self.controllerFrameRight, text="Загрузить график", command=self.loadGraf)
-        self.btnScreenShot = Button (self.controllerFrameRight, text="|O|", command=self.screenShot)
+        self.btnLoadGraf   = Button (self.controllerFrameRight, text="Загрузить график", command=self.loadGraf, state=DISABLED)
+        self.btnScreenShot = Button (self.controllerFrameRight, text="|O|", command=self.screenShot, state=DISABLED)
         self.btnSaveGraf   = Button (self.controllerFrameRight, text="Сохранить график", command=self.saveGraf, state=DISABLED)
         # Верстка фреймов
         self.varListFrame.grid(row=0, column=0, sticky=NW, pady=40, padx=15)      
@@ -40,6 +52,18 @@ class Balista:
         self.angleEntry.grid(row=0, column=1 )
         self.startSpeedLabel.grid(row=1, column=0)
         self.startSpeedEntry.grid(row=1, column=1)
+        self.massLabel.grid(row=2, column=0)
+        self.massEntry.grid(row=2, column=1)
+        self.timeLabel.grid(row=3, column=0)
+        self.distanceLabel.grid(row=4, column=0)
+        self.isWindy.grid(row=5, columnspan=2)
+        if self.isWindy:#.state() == ACTIVE: # NEED TO FIX, SOME BAG
+            self.resistForceLabel.grid(row=6, column=0)
+            self.resistForceEntry.grid(row=6, column=1)
+            self.betaAngleLabel.grid(row=7, column=0)
+            self.betaAngleEntry.grid(row=7, column=1)
+            self.viscosityLabel.grid(row=8, column=0)
+            self.viscosityEntry.grid(row=8, column=1)
         # Верстка кнопок
         self.btnBuild.grid(row=0, column=0)
         self.btnClear.grid(row=0, column=1, padx=10)
@@ -51,11 +75,12 @@ class Balista:
         
         arrX = []
         arrY = []
-        a = int(self.angleEntry.get())
-        Vo = int(self.startSpeedEntry.get())
-        g = 10
-        L = (((Vo**2)*sin(2*a))/g)
-        
+        a    = int(self.angleEntry.get())
+        Vo   = int(self.startSpeedEntry.get())
+        #m    = int(self.massEntry.get())
+        g    = 10 # g = (G*m*M)/((R+y)**2)
+        L    = (((Vo**2)*sin(2*a))/g)
+        self.distanceLabel.configure(text="L = " + str(round(L, 1)))
         for x in range(0, int(L)+1):
             y = ((tan(a)*x) - (g*(x**2))/(2*(Vo**2)*(cos(a)**2)))
             arrX.append(x)
