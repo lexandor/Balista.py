@@ -75,14 +75,28 @@ class Balista:
         
         arrX = []
         arrY = []
+        x = 0
+        y = 0
+        G = 6.67408 * (10**(-11))
+        M = 5973700000000000000000000 #5,972E24
+        R = 6400000
         a    = int(self.angleEntry.get())
         Vo   = int(self.startSpeedEntry.get())
-        #m    = int(self.massEntry.get())
-        g    = 10 # g = (G*m*M)/((R+y)**2)
-        L    = (((Vo**2)*sin(2*a))/g)
+        m    = int(self.massEntry.get())
+        k    = float(self.viscosityEntry.get())
+        #F    = int(self.resistForceEntry.get())
+        F    = k*Vo
+        b    = int(self.betaAngleEntry.get())
+        # g    = 10
+        # g = (G*m*M)/((R+y)**2)
+        g = (G*M)/((R+y)**2)
+        L = (((Vo**2)*sin(2*a))/g)
         self.distanceLabel.configure(text="L = " + str(round(L, 1)))
         for x in range(0, int(L)+1):
-            y = ((tan(a)*x) - (g*(x**2))/(2*(Vo**2)*(cos(a)**2)))
+            g = (G*M)/((R+y)**2)
+            #y = ((tan(a)*x) - (g*(x**2))/(2*(Vo**2)*(cos(a)**2)))
+            y = ((Vo*sin(a)*x)/(Vo*cos(a))) + ((g + ((F*sin(b))/m))/(2*((Vo*cos(a))**2))*(x**2))
+
             arrX.append(x)
             arrY.append(y)
         x = np.array (arrX)
