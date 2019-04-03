@@ -13,13 +13,13 @@ class Balista:
         self.window = window
         # Разметка фреймов
         self.varListFrame         = Frame(self.window)
-        self.grafFrame            = Frame(self.window)
+        self.grafFrame            = Frame(self.window, width=500, height=500)
         self.controllerFrameLeft  = Frame(self.window)
         self.controllerFrameRight = Frame(self.window)
         # Разметка полей ввода
-        self.angleLabel      = Label(self.varListFrame)
+        self.angleLabel      = Label(self.varListFrame, text="A = ")
         self.angleEntry      = Entry(self.varListFrame) # Поле для ввода угла к горизонту
-        self.startSpeedLabel = Label(self.varListFrame)
+        self.startSpeedLabel = Label(self.varListFrame, text="Vo = ")
         self.startSpeedEntry = Entry(self.varListFrame) # Поду для ввода начальной скорости с которой бросили тело.
         # Разметка кнопок
         self.btnBuild      = Button (self.controllerFrameLeft, text="Построить", command=self.plot)
@@ -27,6 +27,11 @@ class Balista:
         self.btnLoadGraf   = Button (self.controllerFrameRight, text="Загрузить график", command=self.loadGraf)
         self.btnScreenShot = Button (self.controllerFrameRight, text="|O|", command=self.screenShot)
         self.btnSaveGraf   = Button (self.controllerFrameRight, text="Сохранить график", command=self.saveGraf)
+        # Верстка фреймов
+        self.varListFrame.grid(row=0, column=0, sticky=NW, pady=40, padx=15)      
+        self.grafFrame.grid(row=0, column=1, pady=20)
+        self.controllerFrameLeft.grid(row=1, column=0, sticky=SW, padx=15)
+        self.controllerFrameRight.grid(row=1, column=1, sticky=SE)
         # Верстка полей ввода
         self.angleLabel.grid(row=0, column=0)
         self.angleEntry.grid(row=0, column=1 )
@@ -37,7 +42,7 @@ class Balista:
         self.btnClear.grid(row=0, column=1, padx=10)
         self.btnLoadGraf.grid(row=0, column=0, padx=10)
         self.btnScreenShot.grid(row=0, column=1)
-        self.btnSaveGraf.grid(row=0, column=2, sticky="e")
+        self.btnSaveGraf.grid(row=0, column=2, sticky="e")    
 
     def plot (self):
         
@@ -56,13 +61,13 @@ class Balista:
         y = np.array (arrY)
         
 
-        fig = Figure(figsize=(6,6))
+        fig = Figure(figsize=(7,5)) #66
         a = fig.add_subplot(111)
         a.plot(x, y,color='blue')
 
-        a.set_title ("BALISTA", fontsize=16)
-        a.set_ylabel("Y", fontsize=14)
-        a.set_xlabel("X", fontsize=14)
+        #a.set_title ("BALISTA", fontsize=12)
+        a.set_ylabel("Y", fontsize=10)
+        a.set_xlabel("X", fontsize=10)
 
         #canvas = FigureCanvasTkAgg(fig, master=self.window)
         canvas = FigureCanvasTkAgg(fig, master=self.grafFrame)
@@ -82,7 +87,7 @@ class Balista:
         pass
 
 window= Tk()
-window.geometry("800x600")
+window.geometry("900x600")
 window.title("Balista")
 start= Balista(window)
 window.mainloop()
