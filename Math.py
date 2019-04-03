@@ -30,11 +30,11 @@ class Balista:
         self.distanceLabel    = Label(self.varListFrame, text="L =")
         self.isWindy          = Checkbutton(self.varListFrame, text="Есть ли ветер?", state=ACTIVE)
         self.resistForceLabel = Label(self.varListFrame, text="Fсопр =")
-        self.resistForceEntry = Entry(self.varListFrame)
+        self.resistForceEntry = Entry(self.varListFrame) # Поле для ввода силы сопротивлеия 
         self.betaAngleLabel   = Label(self.varListFrame, text="B =")
-        self.betaAngleEntry   = Entry(self.varListFrame)  
+        self.betaAngleEntry   = Entry(self.varListFrame) # Поле для ввода угла бета
         self.viscosityLabel   = Label(self.varListFrame, text="k =")
-        self.viscosityEntry   = Entry(self.varListFrame)
+        self.viscosityEntry   = Entry(self.varListFrame) # Полу для ввода коэффицента вязкости воздуха
 
         # Разметка кнопок
         self.btnBuild      = Button (self.controllerFrameLeft, text="Построить", command=self.plot)
@@ -75,27 +75,34 @@ class Balista:
         
         arrX = []
         arrY = []
+        # Исходные значения и константы
         x = 0
         y = 0
         G = 6.67408 * (10**(-11))
         M = 5973700000000000000000000 #5,972E24
         R = 6400000
-        a    = int(self.angleEntry.get())
-        Vo   = int(self.startSpeedEntry.get())
-        m    = int(self.massEntry.get())
-        k    = float(self.viscosityEntry.get())
-        #F    = int(self.resistForceEntry.get())
-        F    = k*Vo
-        b    = int(self.betaAngleEntry.get())
-        # g    = 10
-        # g = (G*m*M)/((R+y)**2)
-        g = (G*M)/((R+y)**2)
+        a    = int(self.angleEntry.get())       # Угол альфа(к горизонту)
+        Vo   = int(self.startSpeedEntry.get())  # Скорость заданная телу при броске
+        m    = int(self.massEntry.get())        # Масса бросаемого тела
+        k    = float(self.viscosityEntry.get()) # Коэффицент вязкости воздуха(задается вручную)
+        if self.resistForceEntry.get() == "":   # Сила сопротивления ветра
+            if Vo < 343:
+                F = k*Vo
+            else:
+                F = k*(Vo**2)
+        else:
+            F = int(self.resistForceEntry.get())
+        
+        b    = int(self.betaAngleEntry.get())   # Угол бетта(между вектором g и F сопр)
+        # g    = 10                             - условное обозначаение
+        # g = (G*M)/((R+y)**2)
+        g = (G*M)/((R+y)**2)                    # Ускорение свободного падения автоматически щетается для каждой высоты
         L = (((Vo**2)*sin(2*a))/g)
         self.distanceLabel.configure(text="L = " + str(round(L, 1)))
         for x in range(0, int(L)+1):
             g = (G*M)/((R+y)**2)
-            #y = ((tan(a)*x) - (g*(x**2))/(2*(Vo**2)*(cos(a)**2)))
-            y = ((Vo*sin(a)*x)/(Vo*cos(a))) + ((g + ((F*sin(b))/m))/(2*((Vo*cos(a))**2))*(x**2))
+            #y = ((tan(a)*x) - (g*(x**2))/(2*(Vo**2)*(cos(a)**2))) # Функция тела брошеного под углом к горизонту
+            y = ((Vo*sin(a)*x)/(Vo*cos(a))) + ((g + ((F*sin(b))/m))/(2*((Vo*cos(a))**2))*(x**2)) # Функция с ветром (не работает)
 
             arrX.append(x)
             arrY.append(y)
@@ -122,18 +129,22 @@ class Balista:
 
     def clear(self):
         pass
+        # Функция которая будет очищать холст от графиков
 
     def loadGraf(self):
         pass
-
+        # Функция которая будет подгружать графики из файла
     def screenShot(self):
         pass
+        # Функция которая делает снимки графиков
 
     def saveGraf(self):
         pass
+        # Функция которая сохраняет массив точек,чтобы потом было можно отстроить график заного.
+        # Частично реализована в функции которая строит графики
 
 window= Tk()
-window.geometry(str(window_width)+'x'+str(window_heigth))
+window.geometry(str(window_width)+'x'+str(window_heigth)) # настройка размера окна по умолчанию
 window.title("Balista")
 start= Balista(window)
 window.mainloop()
