@@ -1,4 +1,6 @@
 _author__ = 'Alexander Ometov aka PLEXER'
+from config import *
+
 import matplotlib
 matplotlib.use('TkAgg')
 import numpy as np
@@ -7,6 +9,7 @@ from matplotlib.figure import Figure
 
 from tkinter import *
 from math import *
+from datetime import datetime
 
 class Balista:
     def __init__(self,  window):
@@ -26,7 +29,7 @@ class Balista:
         self.btnClear      = Button (self.controllerFrameLeft, text="Очистить", command=self.clear)
         self.btnLoadGraf   = Button (self.controllerFrameRight, text="Загрузить график", command=self.loadGraf)
         self.btnScreenShot = Button (self.controllerFrameRight, text="|O|", command=self.screenShot)
-        self.btnSaveGraf   = Button (self.controllerFrameRight, text="Сохранить график", command=self.saveGraf)
+        self.btnSaveGraf   = Button (self.controllerFrameRight, text="Сохранить график", command=self.saveGraf, state=DISABLED)
         # Верстка фреймов
         self.varListFrame.grid(row=0, column=0, sticky=NW, pady=40, padx=15)      
         self.grafFrame.grid(row=0, column=1, pady=20)
@@ -60,6 +63,11 @@ class Balista:
         x = np.array (arrX)
         y = np.array (arrY)
         
+        if logGraf == True:
+            # логирует массив точек горафика в файл. Можно отключить в настройках(конфиге)
+            file = open('log/'+datetime.now().strftime('%H_%M_%S')+'.txt', 'w')
+            file.write(str(arrX) + '\n' + str(arrY))
+            file.close
 
         fig = Figure(figsize=(7,5)) #66
         a = fig.add_subplot(111)
@@ -69,7 +77,6 @@ class Balista:
         a.set_ylabel("Y", fontsize=10)
         a.set_xlabel("X", fontsize=10)
 
-        #canvas = FigureCanvasTkAgg(fig, master=self.window)
         canvas = FigureCanvasTkAgg(fig, master=self.grafFrame)
         canvas.get_tk_widget().pack()
         canvas.draw()
@@ -87,7 +94,7 @@ class Balista:
         pass
 
 window= Tk()
-window.geometry("900x600")
+window.geometry(str(window_width)+'x'+str(window_heigth))
 window.title("Balista")
 start= Balista(window)
 window.mainloop()
