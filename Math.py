@@ -76,33 +76,33 @@ class Balista:
         arrX = []
         arrY = []
         # Исходные значения и константы
-        x = 0
-        y = 0
-        G = 6.67408 * (10**(-11))
-        M = 5973700000000000000000000 #5,972E24
-        R = 6400000
+        #x = 0
+        #y = 0
+        #G = 6.67408 * (10**(-11))
+        #M = 5973700000000000000000000 #5,972E24
+        #R = 6400000
         a    = int(self.angleEntry.get())       # Угол альфа(к горизонту)
         Vo   = int(self.startSpeedEntry.get())  # Скорость заданная телу при броске
-        m    = int(self.massEntry.get())        # Масса бросаемого тела
-        k    = float(self.viscosityEntry.get()) # Коэффицент вязкости воздуха(задается вручную)
-        if self.resistForceEntry.get() == "":   # Сила сопротивления ветра
-            if Vo < 343:
-                F = k*Vo
-            else:
-                F = k*(Vo**2)
-        else:
-            F = int(self.resistForceEntry.get())
+        #m    = int(self.massEntry.get())        # Масса бросаемого тела
+        #k    = float(self.viscosityEntry.get()) # Коэффицент вязкости воздуха(задается вручную)
+        #if self.resistForceEntry.get() == "":   # Сила сопротивления ветра
+        #    if Vo < 343:
+        ##        F = k*Vo
+        #    else:
+        #        F = k*(Vo**2)
+        #else:
+        #    F = int(self.resistForceEntry.get())
         
-        b    = int(self.betaAngleEntry.get())   # Угол бетта(между вектором g и F сопр)
-        # g    = 10                             - условное обозначаение
+        #b    = int(self.betaAngleEntry.get())   # Угол бетта(между вектором g и F сопр)
+        g    = 10                             #- условное обозначаение
         # g = (G*M)/((R+y)**2)
-        g = (G*M)/((R+y)**2)                    # Ускорение свободного падения автоматически щетается для каждой высоты
+        #g = (G*M)/((R+y)**2)                    # Ускорение свободного падения автоматически щетается для каждой высоты
         L = (((Vo**2)*sin(2*a))/g)
         self.distanceLabel.configure(text="L = " + str(round(L, 1)))
         for x in range(0, int(L)+1):
-            g = (G*M)/((R+y)**2)
-            #y = ((tan(a)*x) - (g*(x**2))/(2*(Vo**2)*(cos(a)**2))) # Функция тела брошеного под углом к горизонту
-            y = ((Vo*sin(a)*x)/(Vo*cos(a))) + ((g + ((F*sin(b))/m))/(2*((Vo*cos(a))**2))*(x**2)) # Функция с ветром (не работает)
+            
+            y = ((tan(a)*x) - (g*(x**2))/(2*(Vo**2)*(cos(a)**2))) # Функция тела брошеного под углом к горизонту
+            #y = ((Vo*sin(a)*x)/(Vo*cos(a))) + ((g + ((F*sin(b))/m))/(2*((Vo*cos(a))**2))*(x**2)) # Функция с ветром (не работает)
 
             arrX.append(x)
             arrY.append(y)
